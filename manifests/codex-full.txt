@@ -1,0 +1,10 @@
+summarize-interview
+analyze-feature-requests
+opportunity-solution-tree
+prioritize-features
+create-prd
+user-stories
+wwas
+test-scenarios
+pre-mortem
+release-notes
