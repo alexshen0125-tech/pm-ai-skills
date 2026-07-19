@@ -1,4 +1,5 @@
 summarize-interview
+social-signal-research
 customer-journey-map
 competitor-analysis
 product-strategy

@@ -1,4 +1,5 @@
 summarize-interview
+social-signal-research
 analyze-feature-requests
 opportunity-solution-tree
 prioritize-features
