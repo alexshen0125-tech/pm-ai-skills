@@ -2,33 +2,33 @@
 
 面向产品经理的 Codex / Claude Skills 合集，覆盖：
 
-`需求发现 -> 机会判断 -> PRD -> 开发拆分 -> 测试风险 -> 上线表达`
+`需求发现 -> 社媒信号 -> 机会判断 -> PRD -> 开发拆分 -> 测试风险 -> 上线表达`
 
 ## 一键安装
 
 ### Codex
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s -- codex
+curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s - codex
 ```
 
 ### Claude Code
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s -- claude
+curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s - claude
 ```
 
 ### 两套一起安装
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s -- both
+curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s - both
 ```
 
 默认安装完整组合。只想安装 4 个高频 Skills：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s -- codex minimal
-curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s -- claude minimal
+curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s - codex minimal
+curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main/install.sh | bash -s - claude minimal
 ```
 
 ## 安装位置
@@ -41,6 +41,7 @@ curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main
 ## Codex 组合
 
 - summarize-interview
+- social-signal-research
 - analyze-feature-requests
 - opportunity-solution-tree
 - prioritize-features
@@ -54,6 +55,7 @@ curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main
 ## Claude 组合
 
 - summarize-interview
+- social-signal-research
 - customer-journey-map
 - competitor-analysis
 - product-strategy
