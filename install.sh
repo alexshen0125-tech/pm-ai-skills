@@ -39,7 +39,7 @@ install_manifest() {
 if [[ "$TARGET" == "codex" || "$TARGET" == "both" ]]; then
   install_manifest \
     "$TMP_DIR/repo/manifests/codex-$EDITION.txt" \
-    "$HOME/.codex/skills"
+    "$HOME/.agents/skills"
 fi
 
 if [[ "$TARGET" == "claude" || "$TARGET" == "both" ]]; then

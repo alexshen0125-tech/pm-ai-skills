@@ -33,7 +33,7 @@ curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main
 
 ## 安装位置
 
-- Codex：`~/.codex/skills/<skill-name>/SKILL.md`
+- Codex：`~/.agents/skills/<skill-name>/SKILL.md`（Codex 官方目录；老版本用过 `~/.codex/skills`）
 - Claude Code：`~/.claude/skills/<skill-name>/SKILL.md`
 
 已有同名 Skill 时安装脚本会跳过，不覆盖本地修改。安装后建议重启 Codex 或 Claude Code。
