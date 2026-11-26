@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>原型骨架 · 列表页</title>
+<!-- one-line-html-prototype 骨架：单文件、无外部资源、离线可开。在此基础上改，不要从空白写。 -->
+<style>
+  :root{--bg:#f6f7f9;--card:#fff;--ink:#1f2328;--muted:#6b7280;--line:#e5e7eb;--brand:#2563eb;--danger:#dc2626;--ok:#16a34a;--warn:#d97706;--r:8px;--gap:16px}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:var(--gap)}
+  h1{font-size:18px;margin:0 0 var(--gap)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:var(--gap);margin-bottom:var(--gap)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  input,select{height:32px;border:1px solid var(--line);border-radius:6px;padding:0 10px;font:inherit}
+  button{height:32px;border-radius:6px;border:1px solid var(--line);background:#fff;padding:0 14px;font:inherit;cursor:pointer}
+  button.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button.danger{color:var(--danger)}button:disabled{opacity:.45;cursor:not-allowed}
+  table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--muted);font-weight:500}td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;padding:0 8px;border-radius:10px;font-size:12px;background:#eef2ff;color:var(--brand)}
+  .tag.ok{background:#ecfdf5;color:var(--ok)}.tag.warn{background:#fffbeb;color:var(--warn)}
+  .eg{font-size:12px;color:var(--warn);margin-left:4px}
+  .empty{text-align:center;color:var(--muted);padding:48px 0}
+  .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:6px;display:none}
+  .mask{position:fixed;inset:0;background:rgba(0,0,0,.3);display:none}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(480px,100%);background:#fff;box-shadow:-4px 0 16px rgba(0,0,0,.08);padding:20px;transform:translateX(100%);transition:transform .2s;overflow:auto}
+  .drawer.open{transform:none}.mask.open{display:block}
+  .dialog{position:fixed;top:30%;left:50%;transform:translateX(-50%);width:min(360px,92%);background:#fff;border-radius:var(--r);padding:20px;display:none}
+  .dialog.open{display:block}
+  .demo{font-size:12px;color:var(--muted)}.demo button{height:24px;font-size:12px;padding:0 8px}
+  .assume{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>订单列表 <span class="eg">示例</span></h1>
+
+  <div class="card row">
+    <input id="kw" placeholder="订单号 / 门店名">
+    <select id="st"><option value="">全部状态</option><option>待发货</option><option>已发货</option><option>已取消</option></select>
+    <button class="primary" onclick="render()">查询</button>
+    <button onclick="kw.value='';st.value='';render()">重置</button>
+  </div>
+
+  <div class="card">
+    <div class="row" style="margin-bottom:12px">
+      <button id="batch" disabled onclick="ask('取消选中的订单','选中订单将变为「已取消」，已支付的原路退款。此操作不能撤回。',()=>toast('已取消（示例）'))">批量取消</button>
+      <span class="demo">演示状态：<button onclick="mode='data';render()">有数据</button> <button onclick="mode='empty';render()">空</button> <button onclick="toast('网络异常，请重试')">失败提示</button></span>
+    </div>
+    <table>
+      <thead><tr><th><input type="checkbox" onclick="checkAll(this)"></th><th>订单号</th><th>门店</th><th>状态</th><th style="text-align:right">金额（元）</th><th>下单时间</th><th>操作</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+
+  <div class="card assume"><b>本原型的假设</b>（评审时逐条确认）：① 每页 20 条 ② 取消需二次确认 ③ 仅「待发货」可取消</div>
+</div>
+
+<div class="mask" id="mask" onclick="closeAll()"></div>
+<div class="drawer" id="drawer"></div>
+<div class="dialog" id="dialog"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA=[
+  {id:'SO-0001',shop:'示例门店 A',st:'待发货',amt:1280.5,t:'2026-11-09 21:05'},
+  {id:'SO-0002',shop:'示例门店 B',st:'已发货',amt:356,t:'2026-11-09 20:40'},
+  {id:'SO-0003',shop:'示例门店 C',st:'已取消',amt:89.9,t:'2026-11-09 19:12'},
+  {id:'SO-0004',shop:'示例门店 A',st:'待发货',amt:2045,t:'2026-11-08 22:31'},
+  {id:'SO-0005',shop:'示例门店 D',st:'已发货',amt:610,t:'2026-11-08 18:02'}
+];
+let mode='data';
+const cls={待发货:'warn',已发货:'ok',已取消:''};
+function render(){
+  const k=kw.value.trim(),s=st.value;
+  const rows=mode==='empty'?[]:DATA.filter(r=>(!k||r.id.includes(k)||r.shop.includes(k))&&(!s||r.st===s));
+  tb.innerHTML=rows.length?rows.map(r=>`<tr><td><input type="checkbox" class="ck" onchange="sync()"></td><td>${r.id}</td><td>${r.shop}</td><td><span class="tag ${cls[r.st]}">${r.st}</span></td><td class="num">${r.amt.toFixed(2)}</td><td>${r.t}</td><td><button onclick="detail('${r.id}')">详情</button>${r.st==='待发货'?` <button class="danger" onclick="ask('取消订单 ${r.id}','订单将变为「已取消」，已支付的原路退款。',()=>toast('已取消（示例）'))">取消</button>`:''}</td></tr>`).join('')
+    :`<tr><td colspan="7" class="empty">没有符合条件的订单<br><button style="margin-top:8px" onclick="kw.value='';st.value='';mode='data';render()">清空筛选</button></td></tr>`;
+  sync();
+}
+function sync(){batch.disabled=!document.querySelectorAll('.ck:checked').length}
+function checkAll(el){document.querySelectorAll('.ck').forEach(c=>c.checked=el.checked);sync()}
+function detail(id){const r=DATA.find(x=>x.id===id);drawer.innerHTML=`<h2 style="margin-top:0">${r.id} <span class="tag ${cls[r.st]}">${r.st}</span></h2><p>门店：${r.shop}<br>金额：${r.amt.toFixed(2)} 元<br>下单时间：${r.t}</p><p class="eg">示例数据</p><button onclick="closeAll()">关闭</button>`;drawer.classList.add('open');mask.classList.add('open')}
+function ask(title,body,ok){dialog.innerHTML=`<b>${title}</b><p>${body}</p><div class="row" style="justify-content:flex-end"><button onclick="closeAll()">再想想</button><button class="primary" id="okb">确认</button></div>`;dialog.classList.add('open');mask.classList.add('open');okb.onclick=()=>{closeAll();ok()}}
+function closeAll(){drawer.classList.remove('open');dialog.classList.remove('open');mask.classList.remove('open')}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',1800)}
+render();
+</script>
+</body>
+</html>

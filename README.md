@@ -50,6 +50,7 @@ curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main
 - test-scenarios
 - pre-mortem
 - release-notes
+- one-line-html-prototype
 
 ## Claude 组合
 
@@ -63,6 +64,16 @@ curl -fsSL https://raw.githubusercontent.com/alexshen0125-tech/pm-ai-skills/main
 - pre-mortem
 - slides
 - release-notes
+- one-line-html-prototype
+
+## 单独安装：one-line-html-prototype
+
+一句话出一个能点的单文件 HTML 原型：先复述需求、列假设等你确认，再按页面类型套骨架出页，带空状态、失败提示、危险操作二次确认，最后附 7 条交互自检和假设清单。说明见 [skills/one-line-html-prototype/README.md](skills/one-line-html-prototype/README.md)。
+
+```bash
+# Claude Code（Codex 把目标目录换成 ~/.agents/skills）
+git clone --depth 1 https://github.com/alexshen0125-tech/pm-ai-skills.git /tmp/pm-ai-skills && mkdir -p ~/.claude/skills && cp -R /tmp/pm-ai-skills/skills/one-line-html-prototype ~/.claude/skills/ && rm -rf /tmp/pm-ai-skills
+```
 
 ## 使用提醒
 
